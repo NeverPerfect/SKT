@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKT mit automatischer Splatenverschiebung</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>SKT mit Splatenverschiebung</h1>
+        <div class="calculator">
+            <div class="input-group">
+                <label for="komplexitaet">Komplexität:</label>
+                <div class="komplexitaet-wrapper">
+                    <select id="komplexitaet">
+                        <option value="A*">A*</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                    </select>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="aktivieren" onchange="handleAktivierenChange()">
+                        <label for="aktivieren">Talent aktivieren</label>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="startwert">Startwert:</label>
+                <div class="input-wrapper">
+                    <button class="change-btn" onclick="changeValue('startwert', -1)">–</button>
+                    <input type="number" id="startwert" placeholder="0" min="0" max="99" value="0">
+                    <button class="change-btn" onclick="changeValue('startwert', 1)">+</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="zielwert">Zielwert:</label>
+                <div class="input-wrapper">
+                    <button class="change-btn" onclick="changeValue('zielwert', -1)">–</button>
+                    <input type="number" id="zielwert" placeholder="16" min="0" max="99" value="16">
+                    <button class="change-btn" onclick="changeValue('zielwert', 1)">+</button>
+                </div>
+            </div>
+            <button id="berechnen">Kosten berechnen</button>
+            <div id="ergebnis" class="result"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

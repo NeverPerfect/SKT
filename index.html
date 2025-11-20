@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKT mit automatischer Splatenverschiebung</title>
+    <title>SKT mit Spaltenverschiebung</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>SKT mit Splatenverschiebung</h1>
+        <h1>SKT mit Spaltenverschiebung</h1>
         <div class="calculator">
             <div class="input-group">
                 <label for="komplexitaet">Komplexität:</label>
@@ -16,7 +16,7 @@
                     <select id="komplexitaet">
                         <option value="A*">A*</option>
                         <option value="A">A</option>
-                        <option value="B">B</option>
+                        <option value="B" selected>B</option>
                         <option value="C">C</option>
                         <option value="D">D</option>
                         <option value="E">E</option>
@@ -44,6 +44,23 @@
                     <button class="change-btn" onclick="changeValue('zielwert', -1)">–</button>
                     <input type="number" id="zielwert" placeholder="16" min="0" max="99" value="16">
                     <button class="change-btn" onclick="changeValue('zielwert', 1)">+</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Gedächtnisvorteil:</label>
+                <div class="radio-group">
+                    <div class="radio-wrapper">
+                        <input type="radio" id="gedaechtnis_kein" name="gedaechtnis" value="kein" checked>
+                        <label for="gedaechtnis_kein">Kein Gedächtnisvorteil</label>
+                    </div>
+                    <div class="radio-wrapper">
+                        <input type="radio" id="gedaechtnis_gut" name="gedaechtnis" value="gut">
+                        <label for="gedaechtnis_gut">Gutes Gedächtnis (WdH S.252)</label>
+                    </div>
+                    <div class="radio-wrapper">
+                        <input type="radio" id="gedaechtnis_eidetisch" name="gedaechtnis" value="eidetisch">
+                        <label for="gedaechtnis_eidetisch">Eidetisches Gedächtnis (WdH S.250)</label>
+                    </div>
                 </div>
             </div>
             <button id="berechnen">Kosten berechnen</button>

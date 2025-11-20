@@ -4,8 +4,17 @@ function changeValue(id, delta) {
     value = Math.max(0, value + delta);
     input.value = Math.min(99, value);
 
-    if (id === 'startwert' && value !== 0) {
+    if (id === 'startwert' && value !== 0 && document.getElementById('aktivieren').checked) {
         document.getElementById('aktivieren').checked = false;
+    }
+}
+
+function handleStartwertChange() {
+    const startwertInput = document.getElementById('startwert');
+    const aktivierenCheckbox = document.getElementById('aktivieren');
+
+    if (parseInt(startwertInput.value) > 0 && aktivierenCheckbox.checked) {
+        aktivierenCheckbox.checked = false;
     }
 }
 
@@ -37,7 +46,7 @@ function verschiebeSpalte(aktuelleSpalte, verschiebung) {
     return spaltenReihenfolge[neuerIndex];
 }
 
-function berechneKosten(komplexitaet, startwert, zielwert, aktivieren) {
+function berechneKosten(komplexitaet, startwert, zielwert, aktivieren, gedaechnis) {
     let gesamtkosten = 0;
     let schritte = [];
     let letzteSpalte = komplexitaet;
@@ -62,7 +71,34 @@ function berechneKosten(komplexitaet, startwert, zielwert, aktivieren) {
             letzteSpalte = spalte;
         }
 
-        const kosten = kostenTabelle[spalte][stufe];
+        let kosten = kostenTabelle[spalte][stufe];
+
+        // Sonderregeln für Rundung
+        switch (spalte + stufe) {
+            case "A49": kosten = 50; break;
+            case "B99": kosten = 100; break;
+            case "D174": kosten = 170; break;
+            case "D197": kosten = 200; break;
+            case "E49": kosten = 48; break;
+            case "F52": kosten = 50; break;
+            case "F355": kosten = 350; break;
+            case "F370": kosten = 375; break;
+            case "G474": kosten = 480; break;
+            case "G493": kosten = 500; break;
+            case "H37": kosten = 35; break;
+            case "H137": kosten = 140; break;
+            case "H725": kosten = 720; break;
+            case "H835": kosten = 830; break;
+            case "H986": kosten = 1000; break;
+        }
+
+        // Gedächtnisvorteile anwenden (mit Rundung: ab 0.5 aufrunden)
+        if (gedaechnis === "gut") {
+            kosten = Math.round(kosten * 0.75);
+        } else if (gedaechnis === "eidetisch") {
+            kosten = Math.round(kosten * 0.5);
+        }
+
         gesamtkosten += kosten;
         schritte.push(`Stufe ${stufe-1} → ${stufe}: ${kosten} (${spalte})`);
     }
@@ -74,16 +110,23 @@ function zeigeErgebnis() {
     const komplexitaet = document.getElementById('komplexitaet').value;
     const startwertInput = document.getElementById('startwert');
     const zielwert = parseInt(document.getElementById('zielwert').value);
-    const aktivieren = document.getElementById('aktivieren').checked;
+    const aktivierenCheckbox = document.getElementById('aktivieren');
+    const gedaechnis = document.querySelector('input[name="gedaechtnis"]:checked').value;
 
-    let startwert = aktivieren ? 0 : parseInt(startwertInput.value);
+    let startwert = parseInt(startwertInput.value);
+
+    if (aktivierenCheckbox.checked && startwert > 0) {
+        aktivierenCheckbox.checked = false;
+    }
+
+    const aktivieren = aktivierenCheckbox.checked;
 
     if (isNaN(startwert) || isNaN(zielwert) || startwert < 0 || zielwert < startwert) {
         alert('Bitte gültige Werte eingeben: Startwert muss kleiner als Zielwert sein und beide müssen ≥ 0.');
         return;
     }
 
-    const ergebnis = berechneKosten(komplexitaet, startwert, zielwert, aktivieren);
+    const ergebnis = berechneKosten(komplexitaet, startwert, zielwert, aktivieren, gedaechnis);
 
     const ergebnisDiv = document.getElementById('ergebnis');
     ergebnisDiv.innerHTML = `
@@ -97,4 +140,6 @@ function zeigeErgebnis() {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('berechnen').addEventListener('click', zeigeErgebnis);
+    document.getElementById('aktivieren').addEventListener('change', handleAktivierenChange);
+    document.getElementById('startwert').addEventListener('change', handleStartwertChange);
 });

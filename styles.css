@@ -163,3 +163,16 @@ button#berechnen:hover {
     font-weight: bold;
     color: #a0522d;
 }
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-wrapper input {
+    margin-right: 5px;
+}
+
+.checkbox-wrapper label {
+    white-space: nowrap;
+}
